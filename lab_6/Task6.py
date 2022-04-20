@@ -55,7 +55,8 @@ def find_similar_users(dataset, user, num_users):
     top_users = scores_sorted[:num_users]
     return scores[top_users]
 
-
+# Отримати рекомендації щодо фільмів
+# для вказаного користувача
 def get_recommendations(dataset, input_user):
     if input_user not in dataset:
         raise TypeError('Cannot find ' + input_user + ' in the dataset')
@@ -76,12 +77,12 @@ def get_recommendations(dataset, input_user):
 
     if len(overall_scores) == 0:
         return ["No recommendations possible"]
-
+    # Генерація рейтингів фільмів за допомогою їх нормалізації
     movie_scores = np.array([[score/similarity_scores[item],
                               item] for item, score in overall_scores.items()])
-
+    # Сортування за спаданням
     movie_scores = movie_scores[np.argsort(movie_scores[:, 0])[::-1]]
-
+    # Вилучення рекомендацій фільмів
     movie_recommendations = [movie for _, movie in movie_scores]
     return movie_recommendations
 

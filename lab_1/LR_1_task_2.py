@@ -1,13 +1,13 @@
 import numpy as np
 from sklearn import preprocessing
 
-input_data = np.array([[4.1, -5.9, 3.3],
-                       [6.9, 4.6, 3.9],
-                       [-4.2, 3.8, 2.3],
-                       [3.9, 3.4, 1.2]])
+input_data = np.array([[-5.3, -8.9, 3.0],
+                       [2.9, 5.1, -3.3],
+                       [3.1, -2.8, -3.2],
+                       [2.2, -1.4, 5.1]])
 
 # Бінаризація даних
-data_binarized = preprocessing.Binarizer(threshold=3.2).transform(input_data)
+data_binarized = preprocessing.Binarizer(threshold=2.0).transform(input_data)
 print("\n Binarized data:\n", data_binarized)
 
 # Виведення середнього значення та стандартного відхилення

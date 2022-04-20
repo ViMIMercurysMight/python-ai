@@ -103,8 +103,13 @@ def pearson_score(dataset, user1, user2):
 def find_similar_users(dataset, user, num_users):
     if user not in dataset:
         raise TypeError('Cannot find ' + user + ' in the dataset')
+    # Обчислення оцінки подібності за Пірсоном між
+    # вказаним користувачем та всіма іншими
+    # користувачами в наборі даних
     scores = np.array([[x, pearson_score(dataset, user, x)] for x in dataset if x != user])
+    # Сортування оцінок за спаданням
     scores_sorted = np.argsort(scores[:, 1])[::-1]
+    # Вилучення оцінок перших 'num_users' користувачів
     top_users = scores_sorted[:num_users]
     return scores[top_users]
 

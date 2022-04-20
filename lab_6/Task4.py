@@ -15,19 +15,22 @@ def build_arg_parser() :
                         help='Similarity metric to be user')
     return parser
 
-
+# Обчислення оцінки евклідова відстані між
+# користувачами userl та user2
 def euclidean_score(dataset, user1, user2):
     if user1 not in dataset:
         raise TypeError('Cannot find ' + user1 + ' in the dataset')
     if user2 not in dataset:
         raise TypeError('Cannot find ' + user2 + ' in the dataset')
-
+    # Фільми, оцінені обома користувачами, userl та user2
     common_movies = {}
 
     for item in dataset[user1]:
         if item in dataset[user2]:
             common_movies[item] = 1
 
+    # За відсутності фільмів, оцінених обома користувачами,
+    # оцінка приймається рівною 0
     if len(common_movies) == 0:
         return 0
 
@@ -39,6 +42,7 @@ def euclidean_score(dataset, user1, user2):
                                           - dataset[user2][item]))
     return 1 / (1 + np.sqrt(np.sum(squared_diff)))
 
+#Коеф. кореляції Пірсона
 def pearson_score(dataset, user1, user2):
     if user1 not in dataset:
         raise TypeError('Cannot find ' + user1 + ' in the dataset')
@@ -52,19 +56,29 @@ def pearson_score(dataset, user1, user2):
             common_movies[item] = 1
 
     num_ratings = len(common_movies)
+
+    # За відсутності фільмів, оцінених обома користувачами,
+    # оцінка приймається рівною 0
     if num_ratings == 0:
         return 0
 
+    # Обчислення суми рейтингових оцінок усіх фільмів,
+    # оцінених обома користувачами
     user1_sum = np.sum([dataset[user1][item] for item in common_movies])
     user2_sum = np.sum([dataset[user2][item] for item in common_movies])
 
+    # Обчислення Суми квадратів рейтингових оцінок всіх
+    # фільмів, оцінених обома користувачами
     user1_squared_sum = np.sum([np.square(dataset[user1][item])
                                 for item in common_movies])
     user2_squared_sum = np.sum([np.square(dataset[user2][item])
                                 for item in common_movies])
-
+    # Обчислення суми творів рейтингових оцінок всіх
+    # фільмів, оцінених обома користувачами
     sum_of_products = np.sum([dataset[user1][item] *
                               dataset[user2][item] for item in common_movies])
+
+    # Обчислення коефіцієнта кореляції Пірсона
     Sxy = sum_of_products - (user1_sum * user2_sum / num_ratings)
     Sxx = user1_squared_sum - np.square(user1_sum) / num_ratings
     Syy = user2_squared_sum - np.square(user2_sum) / num_ratings
